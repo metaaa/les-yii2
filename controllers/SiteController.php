@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\SignupForm;
 use app\models\User;
 use Yii;
+use yii\base\Model;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\Response;
@@ -135,10 +136,10 @@ class SiteController extends Controller
         }
 
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->register()) {
                 \Yii::$app->session->setFlash('success', 'Sign up completed.');
-                return $this->redirect(['site/login']);
+                return $this->redirect(['site/index']);
             }
             \Yii::$app->session->setFlash('error', "Username is taken!");
         }

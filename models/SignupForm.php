@@ -60,6 +60,7 @@ class SignupForm extends Model
         if (!$this->getUser()) {
             $user->username = $this->username;
             $user->password = $this->password;
+            $user->reporter = 0;
             $user->save();
             return true;
         }
