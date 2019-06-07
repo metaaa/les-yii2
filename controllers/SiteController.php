@@ -138,8 +138,11 @@ class SiteController extends Controller
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->register()) {
-                \Yii::$app->session->setFlash('success', 'Sign up completed.');
-                return $this->redirect(['site/index']);
+                $user = User::findOne(['username' => $model->username]);
+                if (Yii::$app->user->login($user)) {
+                    \Yii::$app->session->setFlash('success', 'Sign up completed.');
+                    return $this->redirect(['site/index']);
+                }
             }
             \Yii::$app->session->setFlash('error', "Username is taken!");
         }
